@@ -27,18 +27,52 @@ const createAndSavePerson = (done) => {
   });
 };
 
-
-
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople, function(err, ...people){
+    if (err) {
+      console.error(err);
+      return done(err);
+    }
+    done(null, ...people);
+  });
 };
 
+const arrayOfPeople = [
+  { name: 'John', age: 25, favoriteFoods: ['Pizza', 'Burger'] },
+  { name: 'Jane', age: 30, favoriteFoods: ['Sushi', 'Pasta'] },
+  { name: 'Tom', age: 35, favoriteFoods: ['Steak', 'Fish'] }
+];
+
+createManyPeople(arrayOfPeople, function (err, ...people) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(people);
+});
+
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  const searchQuery = {"name": personName};
+  Person.find(searchQuery, function(err, people){
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log(people);
+    done(null , people);
+  });
 };
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  const searchQuery = {"favoriteFoods": food};
+  Person.findOne(searchQuery, (err, food) => {
+    if (err){
+      console.error(err);
+      return;
+    }
+    console.log(food);
+    done(null ,food);
+  });
 };
 
 const findPersonById = (personId, done) => {
